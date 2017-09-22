@@ -74,9 +74,9 @@ void print_matrix(int **m){
 
 int main(){
 	//Declaracion de variables
-	int **matrixA;
-	int **matrixB;
-	int **matrixC;
+	int **matrixA = (int **)malloc(N*sizeof(int *));;
+	int **matrixB = (int **)malloc(N*sizeof(int *));;
+	int **matrixC = (int **)malloc(N*sizeof(int *));;
 
 	allocMatrix(N,N,matrixA);
 	allocMatrix(N,N,matrixB);
