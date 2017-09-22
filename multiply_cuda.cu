@@ -1,20 +1,23 @@
 #include <iostream>
 #include <stdio.h>
 #include <time.h>
+#include <math.h>
 
 #define N 2000
 
 using namespace std;
 
-void fill_matrix(int *m,char c){
+void fill_matrix(int *m){
 	cout<<"Llenamos matriz "<<endl;
 	for(int i=0;i<N;i++){
 		for(int j=0;j<N;j++){
 			switch(c){
 				case 's':
-					m[i][j] = int(i+j);break;
+					m[i*N+j] = sin(i);break;
+				case 'c':
+					m[i*N+j] = cos(i);break;
 				case 'z':
-					m[i][j] = 0;break;
+					m[i*N+j] = 0;break;
 				default: return;
 			}
 		}
@@ -69,7 +72,7 @@ int main(){
 	float tiempo;
 
 	fill_matrix(h_A,'s');
-	fill_matrix(h_B,'s');
+	fill_matrix(h_B,'c');
 	fill_matrix(h_C,'z');
 	//print_matrix(h_A);
 	//print_matrix(h_B);
@@ -89,9 +92,9 @@ int main(){
 
 	int size = N * N * sizeof(int);
 
-	cudaMalloc((void *) &d_A, size);//Reservar memoria en GPU
- 	cudaMalloc((void *) &d_B, size);
- 	cudaMalloc((void *) &d_C, size);
+	cudaMalloc((void **) &d_A, size);//Reservar memoria en GPU
+ 	cudaMalloc((void **) &d_B, size);
+ 	cudaMalloc((void **) &d_C, size);
 
  	cudaMemcpy(d_A, h_A, size, cudaMemcpyHostToDevice);//Pasar datos de CPU a GPU
  	cudaMemcpy(d_B, h_B, size, cudaMemcpyHostToDevice);
