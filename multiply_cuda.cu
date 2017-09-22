@@ -6,7 +6,7 @@
 
 using namespace std;
 
-void fill_matrix(int m[N][N],char c){
+void fill_matrix(int **m,char c){
 	cout<<"Llenamos matriz "<<endl;
 	for(int i=0;i<N;i++){
 		for(int j=0;j<N;j++){
@@ -21,8 +21,21 @@ void fill_matrix(int m[N][N],char c){
 	}
 	return;
 }
+//Reservar memoria para la matriz
+void allocMatrix(int rows,int columns,double **matrix){
+  for(int i = 0; i < rows; i++)
+    matrix[i] = (double *)malloc(columns*sizeof(double));
+}
+//Liberar memoria de la matriz
+void freeMatrix(int rows,double **matrix){
+  int row;
+  for(row = 0;row<rows;row++){
+    free(matrix[row]);
+  }
+  free(matrix);
+}
 //Multiplicacion en CPU
-int multiply_seq(int m1[N][N], int m2[N][N],int m3[N][N]){
+int multiply_seq(int **m1,int **m2,int **m3){
 	cout<<"Multiplicamos con el algoritmo secuencial: \n"<<endl;
 	for(int i=0;i<N;i++){
 		for(int j=0;j<N;j++){
@@ -48,7 +61,7 @@ __global__ void multiply_par(int *a, int *b, int *c) {
 }
 
 //Imprimir matrices
-void print_matrix(int m[N][N]){
+void print_matrix(int **m){
 	for(int i=0;i<N;i++){
 		for(int j=0;j<N;j++){
 			cout<<"["<< m[i][j] <<"]";
@@ -61,9 +74,13 @@ void print_matrix(int m[N][N]){
 
 int main(){
 	//Declaracion de variables
-	int matrixA[N][N];
-	int matrixB[N][N];
-	int matrixC[N][N];
+	int **matrixA;
+	int **matrixB;
+	int **matrixC;
+
+	allocMatrix(N,N,matrixA);
+	allocMatrix(N,N,matrixB);
+	allocMatrix(N,N,matrixC);
 
 	clock_t t_i,t_f;
 	float tiempo;
@@ -85,7 +102,7 @@ int main(){
 	cout<<"Multiplicamos con el algoritmo paralelo: \n"<<endl;
 
 	//Punteros de device
-	int *d_A,*d_B,*d_C;
+	int **d_A,**d_B,**d_C;
 
 	int size = N * N * sizeof(int);
 
@@ -109,10 +126,15 @@ int main(){
 
 	cudaMemcpy(matrixC, d_C, size, cudaMemcpyDeviceToHost);//Pasar datos de GPU a CPU
 
+	//print_matrix(matrixC);
+
   cudaFree(d_A);//Liberar memoria en GPU
  	cudaFree(d_B);
  	cudaFree(d_C);
 
-	print_matrix(matrixC);
+	freeMatrix(N,matrixA);
+	freeMatrix(N,matrixB);
+	freeMatrix(N,matrixC);
+
 	return 0;
 }
