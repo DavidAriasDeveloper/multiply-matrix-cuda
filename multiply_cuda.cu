@@ -7,7 +7,7 @@
 
 using namespace std;
 
-void fill_matrix(int *m){
+void fill_matrix(int *m,char c){
 	cout<<"Llenamos matriz "<<endl;
 	for(int i=0;i<N;i++){
 		for(int j=0;j<N;j++){
@@ -29,8 +29,8 @@ int multiply_seq(int *m1,int *m2,int *m3){
 	cout<<"Multiplicamos con el algoritmo secuencial: \n"<<endl;
 	for(int i=0;i<N;i++){
 		for(int j=0;j<N;j++){
-			for(int it_suma=0;it_suma<N;it_suma++){
-				m3[i][j]+=m1[i][it_suma] * m2[it_suma][j];
+			for(int k=0;k<N;k++){
+				m3[i*N+j]+=m1[j*N+k] * m2[k*N+i];
 			}
 		}
 	}
@@ -54,7 +54,7 @@ __global__ void multiply_par(int *a, int *b, int *c) {
 void print_matrix(int *m){
 	for(int i=0;i<N;i++){
 		for(int j=0;j<N;j++){
-			cout<<"["<< m[i][j] <<"]";
+			cout<<"["<< m[i*N+j] <<"]";
 		}
 		cout<<endl;
 	}
