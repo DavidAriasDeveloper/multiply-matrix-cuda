@@ -22,12 +22,12 @@ void fill_matrix(int **m,char c){
 	return;
 }
 //Reservar memoria para la matriz
-void allocMatrix(int rows,int columns,double **matrix){
+void allocMatrix(int rows,int columns,int **matrix){
   for(int i = 0; i < rows; i++)
-    matrix[i] = (double *)malloc(columns*sizeof(double));
+    matrix[i] = (int *)malloc(columns*sizeof(int));
 }
 //Liberar memoria de la matriz
-void freeMatrix(int rows,double **matrix){
+void freeMatrix(int rows,int **matrix){
   int row;
   for(row = 0;row<rows;row++){
     free(matrix[row]);
