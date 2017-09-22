@@ -7,7 +7,7 @@
 using namespace std;
 
 void fill_matrix(int m[N][N],char c){
-	cout<<"Llenamos matriz: "<<endl;
+	cout<<"Llenamos matriz "<<endl;
 	for(int i=0;i<N;i++){
 		for(int j=0;j<N;j++){
 			switch(c){
@@ -71,8 +71,8 @@ int main(){
 	fill_matrix(matrixA,'s');
 	fill_matrix(matrixB,'s');
 	fill_matrix(matrixC,'z');
-	print_matrix(matrixA);
-	print_matrix(matrixB);
+	//print_matrix(matrixA);
+	//print_matrix(matrixB);
 
 	t_i=clock();
 	multiply_seq(matrixA,matrixB,matrixC);
